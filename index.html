@@ -1,115 +1,184 @@
-<html>
-	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>快乐</title>
-	</head>
-  <body>
-<canvas id="c"></canvas>  
-  <div style="position:absolute;bottom:20px;right:15px;color:yellow">统计访问量:<jsp:getProperty name="count" property="number"/>
-  <br><h5 id="showTime"></h5><h5 id="showTimes"></h5></div>
-  
-  <script>    
-var second = <%= lease_time / 1000%>; // 剩余秒数
-var timelease = <%=lease_time %>
-// 写一个方法，将秒数专为天数
-var toDays = function(){
- var s = second % 60; // 秒
- var mi = (second - s) / 60 % 60; // 分钟
- var h = ((second - s) / 60 - mi ) / 60 % 24; // 小时
- var d = (((second - s) / 60 - mi ) / 60 - h ) / 24 // 天
-return "本网站剩余：" + d + "天" + h + "小时" + mi + "分钟" + s + "秒";
-}
-
-//然后写一个定时器
-window.setInterval(function(){
- second --;
- document.getElementById("showTimes").innerHTML = toDays ();
-}, 1000);
-
-window.setInterval(function(){
-timelease --;
- document.getElementById("showTime").innerHTML = timelease+"ms";
-},1);
-
-</script>
-  <script type="text/javascript">
-window.onload = function () {
-    C = Math.cos; // cache Math objects
-    S = Math.sin;
-    U = 0;
-    w = window;
-    j = document;
-    d = j.getElementById("c");
-    c = d.getContext("2d");
-    W = d.width = w.innerWidth;
-    H = d.height = w.innerHeight;
-    c.fillRect(0, 0, W, H); // resize <canvas> and draw black rect (default)
-    c.globalCompositeOperation = "lighter"; // switch to additive color application
-    c.lineWidth = 0.2;
-    c.lineCap = "round";
-    var bool = 0, 
-        t = 0; // theta
-    d.onmousemove = function (e) {
-        if(window.T) {
-            if(D==9) { D=Math.random()*15; f(1); }
-            clearTimeout(T);
-        }
-        X = e.pageX; // grab mouse pixel coords
-        Y = e.pageY;
-        a=0; // previous coord.x
-        b=0; // previous coord.y 
-        A = X, // original coord.x
-        B = Y; // original coord.y
-        R=(e.pageX/W * 999>>0)/999;
-        r=(e.pageY/H * 999>>0)/999;
-        U=e.pageX/H * 360 >>0;
-        D=9;
-        g = 360 * Math.PI / 180;
-        T = setInterval(f = function (e) { // start looping spectrum
-            c.save();
-            c.globalCompositeOperation = "source-over"; // switch to additive color application
-            if(e!=1) {
-                c.fillStyle = "rgba(0,0,0,0.02)";
-                c.fillRect(0, 0, W, H); // resize <canvas> and draw black rect (default)
-            }
-            c.restore();
-            i = 25; while(i --) {
-                c.beginPath();
-                if(D > 450 || bool) { // decrease diameter
-                    if(!bool) { // has hit maximum
-                        bool = 1;
-                    }
-                    if(D < 0.1) { // has hit minimum
-                        bool = 0;
-                    }
-                    t -= g; // decrease theta
-                    D -= 0.1; // decrease size
-                }
-                if(!bool) {
-                    t += g; // increase theta
-                    D += 0.1; // increase size
-                }
-                q = (R / r - 1) * t; // create hypotrochoid from current mouse position, and setup variables (see: http://en.wikipedia.org/wiki/Hypotrochoid)
-                x = (R - r) * C(t) + D * C(q) + (A + (X - A) * (i / 25)) + (r - R); // center on xy coords
-                y = (R - r) * S(t) - D * S(q) + (B + (Y - B) * (i / 25));
-                if (a) { // draw once two points are set
-                    c.moveTo(a, b);
-                    c.lineTo(x, y)
-                }
-                c.strokeStyle = "hsla(" + (U % 360) + ",100%,50%,0.75)"; // draw rainbow hypotrochoid
-                c.stroke();
-                a = x; // set previous coord.x
-                b = y; // set previous coord.y
-            }
-            U -= 0.5; // increment hue
-            A = X; // set original coord.x
-            B = Y; // set original coord.y
-        }, 16);
-    }
-    j.onkeydown = function(e) { a=b=0; R += 0.05 }
-    d.onmousemove({pageX:300, pageY:290})
-}
+<!doctype html>
+<html lang="en">
  
-</script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<title>小球碰撞</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			#wrap {
+				height: 1900px;
+				width: 1070px;
+				border: 1px solid red;
+				/*小球设置相对定位*/
+				position: relative;
+				margin: 0 auto;
+				overflow: hidden;
+			}
+			p {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				background-color: red;
+				position: absolute;
+				top: 0;
+				left: 0;
+				color: white;
+				font-size: 25px;
+				text-align: center;
+				line-height: 40px;
+			}
+		</style>
+	</head>
+ 
+	<body>
+		<div id="wrap">
+		</div>
+	</body>
+	<script type="text/javascript">
+		function randomNum(m, n) {
+			return Math.floor(Math.random() * (n - m + 1) + m);
+		}
+		/**
+		 * 生成一个随机颜色，并返回rgb字符串值
+		 */
+		function randomColor() {
+			var r = randomNum(0, 255);
+			var g = randomNum(0, 255);
+			var b = randomNum(0, 255);
+			return "rgb(" + r + "," + g + "," + b + ")";
+		}
+		//获得wrapDiv
+		var wrapDiv = document.getElementById("wrap");
+		//定义数组存储所有的小球
+		var balls = [];
+		//生成小球函数
+		function createBalls() {
+			for (var i = 0; i < 20; i++) {
+				var ball = document.createElement("p");
+				//随机小球起始的X坐标和小球的Y坐标
+				ball.x = randomNum(0, 1200);
+				ball.y = randomNum(0, 700);
+				//随机小球的移动速度
+				ball.speed = randomNum(2, 5);
+				//随机小球移动的方向
+				if (Math.random() - 0.5 > 0) {
+					ball.xflag = true;
+				} else {
+					ball.xflag = false;
+				}
+				if (Math.random() - 0.5 > 0) {
+					ball.yflag = true;
+				} else {
+					ball.yflag = false;
+				}
+				//随机小球的背景颜色
+				ball.style.backgroundColor = randomColor();
+				ball.innerHTML = i + 1;
+				//将小球插入当wrapDiv中
+				wrapDiv.appendChild(ball);
+				//将所有的小球存储到数组中
+				balls.push(ball);
+			}
+		}
+		createBalls();
+		//小球移动函数，判断小球的位置
+		function moveBalls(ballObj) {
+			setInterval(function() {
+				ballObj.style.top = ballObj.y + "px";
+				ballObj.style.left = ballObj.x + "px";
+				//判断小球的标志量，对小球作出相应操作
+				if (ballObj.yflag) {
+					//小球向下移动
+					ballObj.y += ballObj.speed;
+					if (ballObj.y >= 800 - ballObj.offsetWidth) {
+						ballObj.y = 800 - ballObj.offsetWidth;
+						ballObj.yflag = false;
+					}
+				} else {
+					//小球向上移动
+					ballObj.y -= ballObj.speed;
+					if (ballObj.y <= 0) {
+						ballObj.y = 0;
+						ballObj.yflag = true;
+					}
+				}
+				if (ballObj.xflag) {
+					//小球向右移动
+					ballObj.x += ballObj.speed;
+					if (ballObj.x >= 1300 - ballObj.offsetHeight) {
+						ballObj.x = 1300 - ballObj.offsetHeight;
+						ballObj.xflag = false;
+					}
+				} else {
+					//小球向左移动
+					ballObj.x -= ballObj.speed;
+					if (ballObj.x <= 0) {
+						ballObj.x = 0;
+						ballObj.xflag = true;
+					}
+				}
+				crash(ballObj);
+			}, 10);
+		}
+		var x1, y1, x2, y2;
+		//碰撞函数
+		function crash(ballObj) {
+			//通过传过来的小球对象来获取小球的X坐标和Y坐标
+			x1 = ballObj.x;
+			y1 = ballObj.y;
+			for (var i = 0; i < balls.length; i++) {
+				//确保不和自己对比
+				if (ballObj != balls[i]) {
+					x2 = balls[i].x;
+					y2 = balls[i].y;
+					//判断位置的平方和小球的圆心坐标的关系
+					if (Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + 800 <= Math.pow(ballObj.offsetWidth + balls[i].offsetWidth, 2)) {
+						//判断传过来的小球对象，相对于碰撞小球的哪个方位
+						if (ballObj.x < balls[i].x) {
+							if (ballObj.y < balls[i].y) {
+								//小球对象在被碰小球的左上角
+								ballObj.yflag = false;
+								ballObj.xflag = false;
+							} else if (ballObj.y > balls[i].y) {
+								//小球对象在被碰小球的左下角
+								ballObj.xflag = false;
+								ballObj.yflag = true;
+							} else {
+								//小球对象在被撞小球的正左方
+								ballObj.xflag = false;
+							}
+						} else if (ballObj.x > balls[i].x) {
+							if (ballObj.y < balls[i].y) {
+								//小球对象在被碰撞小球的右上方
+								ballObj.yflag = false;
+								ballObj.xflag = true;
+							} else if (ballObj.y > balls[i].y) {
+								//小球对象在被碰撞小球的右下方
+								ballObj.xflag = true;
+								ballObj.yflag = true;
+							} else {
+								//小球对象在被撞小球的正右方
+								ballObj.xflag = true;
+							}
+						} else if (ballObj.y > balls[i].y) {
+							//小球对象在被撞小球的正下方
+							ballObj.yflag = true;
+						} else if (ballObj.y < balls[i].y) {
+							//小球对象在被撞小球的正上方
+							ballObj.yflag = false;
+						}
+					}
+				}
+			}
+		}
+		for (var i = 0; i < balls.length; i++) {
+			//将所有的小球传到函数中,来实现对小球的移动
+			moveBalls(balls[i]);
+		}
+	</script>
+ 
 </html>
