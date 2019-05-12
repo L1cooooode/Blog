@@ -10,7 +10,7 @@
 				padding: 0;
 			}
 			#wrap {
-				height: 1900px;
+				height: 1715px;
 				width: 1070px;
 				border: 1px solid red;
 				/*小球设置相对定位*/
@@ -55,9 +55,21 @@
 		var wrapDiv = document.getElementById("wrap");
 		//定义数组存储所有的小球
 		var balls = [];
+		var words=new Array();
+					words[0]="妈";
+					words[1]="母";
+					words[2]="亲";
+					words[3]="快";
+					words[4]="节";
+					words[5]="乐";
+					words[6]="妈";
+					words[7]="我";
+					words[8]="爱";
+					words[9]="你";
+					words[9]="妈";	
 		//生成小球函数
 		function createBalls() {
-			for (var i = 0; i < 20; i++) {
+			for (var i = 0; i < 10; i++) {
 				var ball = document.createElement("p");
 				//随机小球起始的X坐标和小球的Y坐标
 				ball.x = randomNum(0, 1200);
@@ -77,7 +89,7 @@
 				}
 				//随机小球的背景颜色
 				ball.style.backgroundColor = randomColor();
-				ball.innerHTML = i + 1;
+				ball.innerHTML = words[i + 1];
 				//将小球插入当wrapDiv中
 				wrapDiv.appendChild(ball);
 				//将所有的小球存储到数组中
@@ -179,6 +191,5 @@
 			//将所有的小球传到函数中,来实现对小球的移动
 			moveBalls(balls[i]);
 		}
-	</script>
- 
+	</script> 
 </html>
