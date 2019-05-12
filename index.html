@@ -10,8 +10,8 @@
 				padding: 0;
 			}
 			#wrap {
-				height: 1070px;
-				width: 1715px;
+				height: 1715px;
+				width: 1070px;
 				border: 1px solid red;
 				/*小球设置相对定位*/
 				position: relative;
@@ -19,15 +19,15 @@
 				overflow: hidden;
 			}
 			p {
-				width: 40px;
-				height: 40px;
+				width: 50px;
+				height: 50px;
 				border-radius: 50%;
 				background-color: red;
 				position: absolute;
 				top: 0;
 				left: 0;
 				color: white;
-				font-size: 25px;
+				font-size: 38px;
 				text-align: center;
 				line-height: 40px;
 			}
@@ -89,7 +89,7 @@
 				}
 				//随机小球的背景颜色
 				ball.style.backgroundColor = randomColor();
-				ball.innerHTML = words[i + 1];
+				ball.innerHTML = words[i];
 				//将小球插入当wrapDiv中
 				wrapDiv.appendChild(ball);
 				//将所有的小球存储到数组中
@@ -106,8 +106,8 @@
 				if (ballObj.yflag) {
 					//小球向下移动
 					ballObj.y += ballObj.speed;
-					if (ballObj.y >= 800 - ballObj.offsetWidth) {
-						ballObj.y = 800 - ballObj.offsetWidth;
+					if (ballObj.y >= 1715 - ballObj.offsetWidth) {
+						ballObj.y = 1715 - ballObj.offsetWidth;
 						ballObj.yflag = false;
 					}
 				} else {
@@ -121,8 +121,8 @@
 				if (ballObj.xflag) {
 					//小球向右移动
 					ballObj.x += ballObj.speed;
-					if (ballObj.x >= 1300 - ballObj.offsetHeight) {
-						ballObj.x = 1300 - ballObj.offsetHeight;
+					if (ballObj.x >= 1070 - ballObj.offsetHeight) {
+						ballObj.x = 1070 - ballObj.offsetHeight;
 						ballObj.xflag = false;
 					}
 				} else {
