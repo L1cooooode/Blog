@@ -1,25 +1,26 @@
 <html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>å¿«ä¹</title>
+	</head>
   <body>
-
-<canvas id="c"></canvas>
-  
-  
-  <div style="position:absolute;bottom:20px;right:15px;color:yellow">Í³¼Æ·ÃÎÊÁ¿:<jsp:getProperty name="count" property="number"/>
+<canvas id="c"></canvas>  
+  <div style="position:absolute;bottom:20px;right:15px;color:yellow">ç»Ÿè®¡è®¿é—®é‡:<jsp:getProperty name="count" property="number"/>
   <br><h5 id="showTime"></h5><h5 id="showTimes"></h5></div>
   
   <script>    
-var second = <%= lease_time / 1000%>; // Ê£ÓàÃëÊı
+var second = <%= lease_time / 1000%>; // å‰©ä½™ç§’æ•°
 var timelease = <%=lease_time %>
-// Ğ´Ò»¸ö·½·¨£¬½«ÃëÊı×¨ÎªÌìÊı
+// å†™ä¸€ä¸ªæ–¹æ³•ï¼Œå°†ç§’æ•°ä¸“ä¸ºå¤©æ•°
 var toDays = function(){
- var s = second % 60; // Ãë
- var mi = (second - s) / 60 % 60; // ·ÖÖÓ
- var h = ((second - s) / 60 - mi ) / 60 % 24; // Ğ¡Ê±
- var d = (((second - s) / 60 - mi ) / 60 - h ) / 24 // Ìì
-return "±¾ÍøÕ¾Ê£Óà£º" + d + "Ìì" + h + "Ğ¡Ê±" + mi + "·ÖÖÓ" + s + "Ãë";
+ var s = second % 60; // ç§’
+ var mi = (second - s) / 60 % 60; // åˆ†é’Ÿ
+ var h = ((second - s) / 60 - mi ) / 60 % 24; // å°æ—¶
+ var d = (((second - s) / 60 - mi ) / 60 - h ) / 24 // å¤©
+return "æœ¬ç½‘ç«™å‰©ä½™ï¼š" + d + "å¤©" + h + "å°æ—¶" + mi + "åˆ†é’Ÿ" + s + "ç§’";
 }
 
-//È»ºóĞ´Ò»¸ö¶¨Ê±Æ÷
+//ç„¶åå†™ä¸€ä¸ªå®šæ—¶å™¨
 window.setInterval(function(){
  second --;
  document.getElementById("showTimes").innerHTML = toDays ();
