@@ -3,7 +3,7 @@
  
 	<head>
 		<meta charset="UTF-8" />
-		<title>小球碰撞</title>
+		<title>母亲节快乐</title>
 		<style type="text/css">
 			* {
 				margin: 0;
@@ -17,6 +17,12 @@
 				position: relative;
 				margin: 0 auto;
 				overflow: hidden;
+			}
+			#k {
+				color:red;
+				font-size:50px;
+				animation:change 10s linear 0s infinite;font-size:30px;font-weight:700;}
+@keyframes change{0%   {color:#333;}25%{color:#ff0;}50%{color:#f60;}75%{color:#cf0;}100% {color:#f00;}
 			}
 			p {
 				width: 50px;
@@ -35,7 +41,7 @@
 	</head>
  
 	<body>
-		<div id="wrap">
+		<div id="wrap"><div id="k"></div>
 		</div>
 	</body>
 	<script type="text/javascript">
@@ -144,12 +150,14 @@
 			y1 = ballObj.y;
 			for (var i = 0; i < balls.length; i++) {
 				//确保不和自己对比
-				if (ballObj != balls[i]) {
+				if (ballObj != balls[i]) {					
 					x2 = balls[i].x;
 					y2 = balls[i].y;
 					//判断位置的平方和小球的圆心坐标的关系
-					if (Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + 800 <= Math.pow(ballObj.offsetWidth + balls[i].offsetWidth, 2)) {
+					if (Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + 5800 <= Math.pow(ballObj.offsetWidth + balls[i].offsetWidth, 2)) {
 						//判断传过来的小球对象，相对于碰撞小球的哪个方位
+				var wrapDivk = document.getElementById("k");
+				wrapDivk.innerHTML += words[i];
 						if (ballObj.x < balls[i].x) {
 							if (ballObj.y < balls[i].y) {
 								//小球对象在被碰小球的左上角
