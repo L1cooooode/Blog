@@ -1,33 +1,6 @@
-<%@ page contentType="text/html;charset=gb2312" %>
-<%@ page import="java.io.*,java.util.*,javax.servlet.*,java.text.SimpleDateFormat,java.util.Date" %>
-<jsp:useBean id="count" class="red.star.ComputerCount" scope="session"/>
 <html>
   <body>
-  <%Date date = new Date(); 
-   SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  long time_long=sdf.parse("2019-04-24 23:59:59").getTime();
-  long lease_time=time_long-date.getTime();
-  %>
-   <% 
-try{
-request.setCharacterEncoding("GB2312"); 
-String mywords=request.getParameter("message");
-String t="";
-if(application.getAttribute("words")==null && mywords!=null){
-t= (String)request.getRemoteAddr() + ":" + mywords + "<br/>";
-application.setAttribute("words",(Object)t);
-out.println(t);
-}
-else if(mywords!=null){
-t=(String)application.getAttribute("words");
-t += (String)request.getRemoteAddr() + ":" + mywords + "<br/>";
-application.setAttribute("words",(Object)t);
-out.println(t);
-}
-}
-catch(Exception e){
-}
-%>
+
 <canvas id="c"></canvas>
   
   
